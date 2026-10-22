@@ -59,11 +59,19 @@ Each deployment has five parts.
 
 ```mermaid
 flowchart LR
-    A["Issuer system"] -->|"daily figures"| B["Push API"]
-    B --> C[("Metrics store")]
-    D["Operator UI: consent, revocation, audit log, API keys"] --> C
-    C --> E["Versioned API"]
-    E -->|"public metrics"| F["Consumers"]
+    A["Issuer system"]
+    F["Consumers"]
+    subgraph G["Issuer Metrics API (grant scope)"]
+        B["Push API"]
+        C[("Metrics store")]
+        D["Operator UI: consent, revocation, audit log, API keys"]
+        E["Versioned API"]
+        B --> C
+        D --> C
+        C --> E
+    end
+    A -->|"daily figures"| B
+    E -->|"public metrics"| F
     E -->|"restricted metrics, with API key"| F
 ```
 
